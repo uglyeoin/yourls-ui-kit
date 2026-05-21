@@ -135,17 +135,17 @@ function yourls_ui_kit_template_navbar() {
  *      yourls_table_tfoot() — we hook around those to wrap the
  *      table inside a UIkit card.
  * ------------------------------------------------------------------ */
-echo "<div class='uk-container'>";
 yourls_add_action( 'admin_page_before_table', 'yourls_ui_kit_template_table_open' );
 yourls_add_action( 'admin_page_after_table', 'yourls_ui_kit_template_table_close' );
-echo "'</div>";
 
 function yourls_ui_kit_template_table_open() {
+    echo '<div class="uk-container">';
     echo '<div class="uk-card uk-card-default uk-card-body sb-table-card uk-margin-top">';
     echo '<h3 class="uk-card-title"><span uk-icon="icon: link"></span> Your short links</h3>';
 }
 
 function yourls_ui_kit_template_table_close() {
+    echo '</div>';
     echo '</div>';
 }
 
@@ -262,13 +262,13 @@ function yourls_ui_kit_template_dashboard_page() {
             <?php if ( !$recent ) : ?>
               <p class="uk-text-muted">No links yet.</p>
             <?php else: ?>
-            <div class="uk-overflow-container"></div>
+            <div class="uk-overflow-container">
               <table class="uk-table uk-table-divider uk-table-small uk-table-middle">
                 <thead><tr><th>Short URL</th><th>Destination</th><th class="uk-text-right">When</th></tr></thead>
                 <tbody>
                 <?php foreach ( $recent as $row ) : ?>
                   <tr>
-                    <td><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
+                    <td class="sb-truncate"><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
                     <td class="sb-truncate">
                       <?php if ( !empty($row->title) ) : ?>
                         <strong class="sb-list-title"><?php echo htmlspecialchars( $row->title ); ?></strong><br>
