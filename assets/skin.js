@@ -80,5 +80,23 @@
         document.querySelectorAll('#shareboxes .share-button, .button-share').forEach(function (el) {
             el.classList.add('uk-button', 'uk-button-default', 'uk-button-small');
         });
+
+        // 5. Wrap the page h2 + optional description paragraph in uk-container.
+        var mainEl = document.querySelector('#wrap > main, body > main');
+        if (mainEl) {
+            var children = mainEl.children;
+            var pageH2 = null;
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].tagName === 'H2') { pageH2 = children[i]; break; }
+            }
+            if (pageH2) {
+                var wrap = document.createElement('div');
+                wrap.className = 'uk-container sb-page-header';
+                pageH2.parentNode.insertBefore(wrap, pageH2);
+                wrap.appendChild(pageH2);
+                var next = wrap.nextElementSibling;
+                if (next && next.tagName === 'P') { wrap.appendChild(next); }
+            }
+        }
     });
 })();

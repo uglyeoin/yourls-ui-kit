@@ -29,8 +29,9 @@ html, body {
 
 /* Hide the original H1 logo + tagline – the navbar replaces it */
 #wrap > h1,
-body > h1:first-of-type,
-body > p:first-of-type {
+h1#logo,
+#wrap > p:first-of-type,
+body > h1:first-of-type {
     display: none !important;
 }
 
@@ -618,6 +619,25 @@ a {
 a:hover {
     color: var(--sb-accent);
     filter: brightness(0.9);
+}
+
+/* Prevent a:visited from overriding UIkit button colours */
+a.uk-button:visited,
+.uk-button:visited {
+    color: inherit;
+}
+
+a.uk-button-primary:visited {
+    color: #fff;
+}
+
+a.uk-button-default:visited {
+    color: var(--sb-text);
+}
+
+a.uk-button-secondary:visited,
+a.uk-button-danger:visited {
+    color: #fff;
 }
 
 code, pre {

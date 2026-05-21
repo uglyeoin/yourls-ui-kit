@@ -52,10 +52,14 @@ function yourls_ui_kit_template_navbar() {
     $site = YOURLS_SITE;
     $admin = yourls_admin_url();
     $current = isset($_SERVER['SCRIPT_NAME']) ? basename($_SERVER['SCRIPT_NAME']) : '';
+    $current_page = isset($_GET['page']) ? $_GET['page'] : '';
 
     // Plugin pages registered via yourls_register_plugin_page() show up
     // at plugins.php?page=xxx — add our dashboard there as a top-level item.
     $dashboard_url = yourls_admin_url( 'plugins.php?page=uikit_skin_dashboard' );
+
+    $is_dashboard = ($current === 'plugins.php' && $current_page === 'uikit_skin_dashboard');
+    $is_plugins   = ($current === 'plugins.php' && $current_page === '');
     ?>
     <nav class="sb-navbar">
       <div class="uk-navbar-container sb-navbar-inner" uk-navbar="mode: click">
@@ -65,14 +69,16 @@ function yourls_ui_kit_template_navbar() {
           <span class="sb-logo-text"><?php echo htmlspecialchars( parse_url( $site, PHP_URL_HOST ) ); ?></span>
         </a>
         <ul class="uk-navbar-nav uk-visible@s">
-          <li><a href="<?php echo $dashboard_url; ?>"><span uk-icon="icon: home"></span> Dashboard</a></li>
+          <li class="<?php echo ($is_dashboard ? 'uk-active' : ''); ?>">
+            <a href="<?php echo $dashboard_url; ?>"><span uk-icon="icon: home"></span> Dashboard</a>
+          </li>
           <li class="<?php echo ($current === 'index.php' ? 'uk-active' : ''); ?>">
             <a href="<?php echo yourls_admin_url('index.php'); ?>"><span uk-icon="icon: link"></span> Links</a>
           </li>
           <li class="<?php echo ($current === 'tools.php' ? 'uk-active' : ''); ?>">
             <a href="<?php echo yourls_admin_url('tools.php'); ?>"><span uk-icon="icon: cog"></span> Tools</a>
           </li>
-          <li class="<?php echo ($current === 'plugins.php' ? 'uk-active' : ''); ?>">
+          <li class="<?php echo ($is_plugins ? 'uk-active' : ''); ?>">
             <a href="<?php echo yourls_admin_url('plugins.php'); ?>"><span uk-icon="icon: database"></span> Plugins</a>
           </li>
         </ul>
@@ -224,23 +230,25 @@ function yourls_ui_kit_template_dashboard_page() {
             <?php if ( !$top ) : ?>
               <p class="uk-text-muted">No links yet.</p>
             <?php else: ?>
-            <table class="uk-table uk-table-divider uk-table-small uk-table-middle">
-              <thead><tr><th>Short URL</th><th>Destination</th><th class="uk-text-right">Clicks</th></tr></thead>
-              <tbody>
-              <?php foreach ( $top as $row ) : ?>
-                <tr>
-                  <td><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
-                  <td class="sb-truncate">
-                    <?php if ( !empty($row->title) ) : ?>
-                      <strong class="sb-list-title"><?php echo htmlspecialchars( $row->title ); ?></strong><br>
-                    <?php endif; ?>
-                    <small class="uk-text-muted"><?php echo htmlspecialchars( $row->url ); ?></small>
-                  </td>
-                  <td class="uk-text-right"><span class="uk-label sb-clicks-badge"><?php echo number_format( $row->clicks ); ?></span></td>
-                </tr>
-              <?php endforeach; ?>
-              </tbody>
-            </table>
+              <div class="uk-overflow-container">
+                <table class="uk-table uk-table-divider uk-table-small uk-table-middle">
+                  <thead><tr><th>Short URL</th><th>Destination</th><th class="uk-text-right">Clicks</th></tr></thead>
+                  <tbody>
+                  <?php foreach ( $top as $row ) : ?>
+                    <tr>
+                      <td><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
+                      <td class="sb-truncate">
+                        <?php if ( !empty($row->title) ) : ?>
+                          <strong class="sb-list-title"><?php echo htmlspecialchars( $row->title ); ?></strong><br>
+                        <?php endif; ?>
+                        <small class="uk-text-muted"><?php echo htmlspecialchars( $row->url ); ?></small>
+                      </td>
+                      <td class="uk-text-right"><span class="uk-label sb-clicks-badge"><?php echo number_format( $row->clicks ); ?></span></td>
+                    </tr>
+                  <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div>
             <?php endif; ?>
           </div>
         </div>
@@ -252,23 +260,25 @@ function yourls_ui_kit_template_dashboard_page() {
             <?php if ( !$recent ) : ?>
               <p class="uk-text-muted">No links yet.</p>
             <?php else: ?>
-            <table class="uk-table uk-table-divider uk-table-small uk-table-middle">
-              <thead><tr><th>Short URL</th><th>Destination</th><th class="uk-text-right">When</th></tr></thead>
-              <tbody>
-              <?php foreach ( $recent as $row ) : ?>
-                <tr>
-                  <td><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
-                  <td class="sb-truncate">
-                    <?php if ( !empty($row->title) ) : ?>
-                      <strong class="sb-list-title"><?php echo htmlspecialchars( $row->title ); ?></strong><br>
-                    <?php endif; ?>
-                    <small class="uk-text-muted"><?php echo htmlspecialchars( $row->url ); ?></small>
-                  </td>
-                  <td class="uk-text-right"><small class="uk-text-muted"><?php echo yourls_date_i18n( 'M j, H:i', strtotime( $row->timestamp ) ); ?></small></td>
-                </tr>
-              <?php endforeach; ?>
-              </tbody>
-            </table>
+            <div class="uk-overflow-container"></div>
+              <table class="uk-table uk-table-divider uk-table-small uk-table-middle">
+                <thead><tr><th>Short URL</th><th>Destination</th><th class="uk-text-right">When</th></tr></thead>
+                <tbody>
+                <?php foreach ( $recent as $row ) : ?>
+                  <tr>
+                    <td><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
+                    <td class="sb-truncate">
+                      <?php if ( !empty($row->title) ) : ?>
+                        <strong class="sb-list-title"><?php echo htmlspecialchars( $row->title ); ?></strong><br>
+                      <?php endif; ?>
+                      <small class="uk-text-muted"><?php echo htmlspecialchars( $row->url ); ?></small>
+                    </td>
+                    <td class="uk-text-right"><small class="uk-text-muted"><?php echo yourls_date_i18n( 'M j, H:i', strtotime( $row->timestamp ) ); ?></small></td>
+                  </tr>
+                <?php endforeach; ?>
+                </tbody>
+              </table>
+            </div>
             <?php endif; ?>
           </div>
         </div>
