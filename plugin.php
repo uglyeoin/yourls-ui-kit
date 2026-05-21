@@ -185,8 +185,10 @@ function yourls_ui_kit_template_dashboard_page() {
 
     $avg = $total_links > 0 ? round( $total_clicks / $total_links, 1 ) : 0;
     ?>
-    <h2 class="sb-page-title">Dashboard</h2>
-    <p class="uk-text-muted">A quick overview of your shortener.</p>
+    <div class="uk-container">
+      <h2 class="sb-page-title">Dashboard</h2>
+      <p class="uk-text-muted">A quick overview of your shortener.</p>
+    </div>
 
     <div class="uk-container">
       <!-- Stat tiles -->
@@ -312,20 +314,22 @@ function yourls_ui_kit_template_settings_page() {
     $accent = yourls_get_option( 'sb_uikit_accent', '#1e87f0' );
     $nonce  = yourls_create_nonce( 'yourls-ui-kit-template_settings' );
     ?>
-    <h2 class="sb-page-title">UIkit Skin Settings</h2>
-    <div class="uk-card uk-card-default uk-card-body" style="max-width:520px">
-      <form method="post" class="uk-form-stacked">
-        <input type="hidden" name="nonce" value="<?php echo $nonce; ?>" />
-        <div class="uk-margin">
-          <label class="uk-form-label" for="sb_accent_color">Accent colour</label>
-          <div class="uk-form-controls uk-flex uk-flex-middle">
-            <input id="sb_accent_color" name="sb_accent_color" type="color" value="<?php echo htmlspecialchars($accent); ?>" style="width:60px;height:40px;border:none;background:transparent;cursor:pointer" />
-            <input type="text" class="uk-input uk-margin-small-left" value="<?php echo htmlspecialchars($accent); ?>" id="sb_accent_hex" style="max-width:140px" />
+    <div class="uk-container">
+      <h2 class="sb-page-title">UIkit Skin Settings</h2>
+      <div class="uk-card uk-card-default uk-card-body" style="max-width:520px">
+        <form method="post" class="uk-form-stacked">
+          <input type="hidden" name="nonce" value="<?php echo $nonce; ?>" />
+          <div class="uk-margin">
+            <label class="uk-form-label" for="sb_accent_color">Accent colour</label>
+            <div class="uk-form-controls uk-flex uk-flex-middle">
+              <input id="sb_accent_color" name="sb_accent_color" type="color" value="<?php echo htmlspecialchars($accent); ?>" style="width:60px;height:40px;border:none;background:transparent;cursor:pointer" />
+              <input type="text" class="uk-input uk-margin-small-left" value="<?php echo htmlspecialchars($accent); ?>" id="sb_accent_hex" style="max-width:140px" />
+            </div>
+            <p class="uk-text-meta">Used for buttons, navbar accents and stat tiles.</p>
           </div>
-          <p class="uk-text-meta">Used for buttons, navbar accents and stat tiles.</p>
-        </div>
-        <button type="submit" name="sb_uikit_save" value="1" class="uk-button uk-button-primary">Save changes</button>
-      </form>
+          <button type="submit" name="sb_uikit_save" value="1" class="uk-button uk-button-primary">Save changes</button>
+        </form>
+      </div>
     </div>
     <script>
       // Sync color picker <-> hex field
