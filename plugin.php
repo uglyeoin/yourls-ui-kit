@@ -65,10 +65,10 @@ function yourls_ui_kit_template_navbar() {
           <span class="sb-logo-text"><?php echo htmlspecialchars( parse_url( $site, PHP_URL_HOST ) ); ?></span>
         </a>
         <ul class="uk-navbar-nav uk-visible@s">
+          <li><a href="<?php echo $dashboard_url; ?>"><span uk-icon="icon: home"></span> Dashboard</a></li>
           <li class="<?php echo ($current === 'index.php' ? 'uk-active' : ''); ?>">
             <a href="<?php echo yourls_admin_url('index.php'); ?>"><span uk-icon="icon: link"></span> Links</a>
           </li>
-          <li><a href="<?php echo $dashboard_url; ?>"><span uk-icon="icon: home"></span> Dashboard</a></li>
           <li class="<?php echo ($current === 'tools.php' ? 'uk-active' : ''); ?>">
             <a href="<?php echo yourls_admin_url('tools.php'); ?>"><span uk-icon="icon: cog"></span> Tools</a>
           </li>
@@ -111,8 +111,8 @@ function yourls_ui_kit_template_navbar() {
         <button class="uk-offcanvas-close" type="button" uk-close></button>
         <h3>Menu</h3>
         <ul class="uk-nav uk-nav-default">
-          <li><a href="<?php echo yourls_admin_url('index.php'); ?>"><span uk-icon="icon: link"></span> Links</a></li>
           <li><a href="<?php echo $dashboard_url; ?>"><span uk-icon="icon: home"></span> Dashboard</a></li>
+          <li><a href="<?php echo yourls_admin_url('index.php'); ?>"><span uk-icon="icon: link"></span> Links</a></li>
           <li><a href="<?php echo yourls_admin_url('tools.php'); ?>"><span uk-icon="icon: cog"></span> Tools</a></li>
           <li><a href="<?php echo yourls_admin_url('plugins.php'); ?>"><span uk-icon="icon: database"></span> Plugins</a></li>
           <li class="uk-nav-divider"></li>
