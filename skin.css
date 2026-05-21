@@ -1,0 +1,660 @@
+/* ============================================================
+   YOURLS UIkit Skin
+   Modern admin re-skin built on UIkit 3.
+   ============================================================ */
+
+:root {
+    --sb-accent: #1e87f0;
+    --sb-bg: #f6f8fb;
+    --sb-card-bg: #ffffff;
+    --sb-border: #e5e9f0;
+    --sb-text: #1f2937;
+    --sb-text-muted: #6b7280;
+    --sb-radius: 10px;
+    --sb-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.04);
+    --sb-shadow-lg: 0 4px 6px rgba(15, 23, 42, 0.04), 0 12px 32px rgba(15, 23, 42, 0.08);
+}
+
+/* ---------- Base reset of YOURLS defaults ---------- */
+
+html, body {
+    background: var(--sb-bg) !important;
+    color: var(--sb-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+}
+
+/* Hide the original H1 logo + tagline – the navbar replaces it */
+#wrap > h1,
+body > h1:first-of-type,
+body > p:first-of-type {
+    display: none !important;
+}
+
+/* The default YOURLS layout has #wrap with weird widths. Make it full-width and let inner elements constrain themselves. */
+#wrap {
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+}
+
+/* The page content (everything after the logo) sits inside <main> */
+#wrap > main,
+body > main {
+    display: block;
+    max-width: 1280px;
+    margin: 0 auto !important;
+    padding: 32px !important;
+    box-sizing: border-box;
+}
+
+/* Original admin_menu (top tab bar) — hide it, we use the navbar */
+#admin_menu,
+ul#admin_menu_logout_link {
+    display: none !important;
+}
+
+/* ---------- Navbar ---------- */
+
+.sb-navbar {
+    background: #ffffff;
+    box-shadow: var(--sb-shadow);
+    border-bottom: 1px solid var(--sb-border);
+    position: sticky;
+    top: 0;
+    z-index: 980;
+    padding: 0 32px;
+}
+
+.sb-navbar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.sb-navbar-inner.uk-navbar-container:not(.uk-navbar-transparent) {
+    background: transparent !important;
+}
+
+.sb-navbar .uk-navbar-nav > li > a {
+    color: var(--sb-text);
+    font-weight: 500;
+    text-transform: none;
+    min-height: 64px;
+    font-size: 14px;
+    gap: 6px;
+}
+
+.sb-navbar .uk-navbar-nav > li.uk-active > a,
+.sb-navbar .uk-navbar-nav > li > a:hover {
+    color: var(--sb-accent);
+}
+
+.sb-navbar .uk-navbar-nav > li.uk-active > a {
+    box-shadow: inset 0 -3px 0 var(--sb-accent);
+}
+
+.sb-logo-icon {
+    color: var(--sb-accent);
+    margin-right: 8px;
+}
+
+.sb-logo-text {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--sb-text);
+    letter-spacing: -0.01em;
+}
+
+.sb-username {
+    margin-left: 8px;
+    font-weight: 500;
+}
+
+/* ---------- Mobile adjustments ---------- */
+
+@media (max-width: 768px) {
+    .sb-navbar { padding: 0 16px; }
+    #wrap > main,
+    body > main { padding: 20px 16px !important; }
+}
+
+/* Section headings */
+.sb-page-title,
+#wrap h2,
+main > h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--sb-text);
+    margin: 0 0 4px;
+    letter-spacing: -0.02em;
+}
+
+/* ---------- Cards ---------- */
+
+.uk-card {
+    border-radius: var(--sb-radius) !important;
+    border: 1px solid var(--sb-border);
+    box-shadow: var(--sb-shadow);
+    background: var(--sb-card-bg) !important;
+}
+
+.uk-card-default {
+    box-shadow: var(--sb-shadow);
+}
+
+.uk-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--sb-text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.uk-card-title [uk-icon] {
+    color: var(--sb-accent);
+}
+
+/* ---------- Stat tiles ---------- */
+
+.sb-stats { margin-top: 24px; }
+
+.sb-stat-card {
+    position: relative;
+    overflow: hidden;
+    padding: 24px !important;
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.sb-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sb-shadow-lg);
+}
+
+.sb-stat-icon {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    opacity: 0.18;
+}
+
+.sb-stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--sb-text);
+    letter-spacing: -0.02em;
+}
+
+.sb-stat-label {
+    font-size: 13px;
+    color: var(--sb-text-muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+}
+
+.sb-stat-blue  { border-left: 4px solid #1e87f0; }
+.sb-stat-blue .sb-stat-icon { color: #1e87f0; }
+.sb-stat-green { border-left: 4px solid #32d296; }
+.sb-stat-green .sb-stat-icon { color: #32d296; }
+.sb-stat-amber { border-left: 4px solid #faa05a; }
+.sb-stat-amber .sb-stat-icon { color: #faa05a; }
+.sb-stat-pink  { border-left: 4px solid #f0506e; }
+.sb-stat-pink .sb-stat-icon { color: #f0506e; }
+
+/* ---------- The "new link" form (top of index.php) ---------- */
+
+#new_url,
+form#new_url_form,
+div#new_url {
+    background: var(--sb-card-bg);
+    border: 1px solid var(--sb-border);
+    border-radius: var(--sb-radius);
+    padding: 24px;
+    box-shadow: var(--sb-shadow);
+    margin-bottom: 24px;
+}
+
+#new_url p {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+}
+
+#new_url label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sb-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-right: 8px;
+}
+
+#new_url input[type="text"],
+#new_url input[type="url"],
+input.text,
+input#add-url,
+input#add-keyword,
+input#add-title {
+    background: #fff;
+    border: 1px solid var(--sb-border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--sb-text);
+    transition: border-color .15s ease, box-shadow .15s ease;
+    min-width: 0;
+}
+
+input.text:focus,
+input#add-url:focus,
+input#add-keyword:focus,
+input#add-title:focus,
+#new_url input:focus {
+    outline: none;
+    border-color: var(--sb-accent);
+    box-shadow: 0 0 0 3px rgba(30, 135, 240, 0.12);
+}
+
+#add-url { flex: 1 1 300px; }
+#add-keyword { flex: 0 1 160px; }
+#add-title { flex: 1 1 200px; }
+
+/* All input buttons (Shorten, etc) — give them a modern look */
+input[type="button"],
+input[type="submit"],
+input.button,
+#add-button,
+button.button {
+    background: var(--sb-accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: filter .15s ease, transform .05s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input.button:hover,
+#add-button:hover,
+button.button:hover {
+    filter: brightness(1.05);
+}
+
+input[type="button"]:active,
+input[type="submit"]:active,
+input.button:active,
+#add-button:active {
+    transform: translateY(1px);
+}
+
+/* Secondary buttons (delete, etc) get a neutral colour */
+input.button.button-warning,
+input[value="Delete"] {
+    background: #f0506e;
+}
+
+/* ---------- The main YOURLS table ---------- */
+
+table#main_table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--sb-card-bg);
+    border: 1px solid var(--sb-border);
+    border-radius: var(--sb-radius);
+    overflow: hidden;
+    box-shadow: var(--sb-shadow);
+}
+
+table#main_table th {
+    background: #f9fafb;
+    color: var(--sb-text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--sb-border);
+    text-align: left;
+}
+
+table#main_table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--sb-border);
+    vertical-align: middle;
+    background: #fff;
+    font-size: 14px;
+    color: var(--sb-text);
+}
+
+table#main_table tr:last-child td {
+    border-bottom: none;
+}
+
+table#main_table tr:hover td {
+    background: #f9fafb;
+}
+
+/* The clicks column — turn it into a pill */
+table#main_table td.clicks {
+    font-weight: 600;
+    color: var(--sb-accent);
+}
+
+/* The URL column should be readable */
+table#main_table td.url {
+    max-width: 380px;
+    word-wrap: break-word;
+}
+
+table#main_table td.url a {
+    color: var(--sb-text);
+    font-weight: 500;
+    text-decoration: none;
+}
+
+table#main_table td.url a:hover {
+    color: var(--sb-accent);
+}
+
+table#main_table td.keyword a {
+    color: var(--sb-accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* Action buttons in rows */
+table#main_table td.actions {
+    white-space: nowrap;
+}
+
+table#main_table td.actions input[type="button"] {
+    padding: 6px 10px;
+    font-size: 12px;
+    margin: 0 2px;
+}
+
+/* Wrap-card for the table */
+.sb-table-card {
+    margin-top: 24px;
+}
+
+.sb-table-card #main_table {
+    box-shadow: none;
+    border: 1px solid var(--sb-border);
+}
+
+/* ---------- Pagination / nav_links area ---------- */
+
+#nav_links,
+.tblnavtop,
+.tblnavbtm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+#nav_links a,
+.navigation-links a {
+    background: #fff;
+    border: 1px solid var(--sb-border);
+    color: var(--sb-text);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-decoration: none;
+    transition: all .15s ease;
+    display: inline-block;
+}
+
+#nav_links a:hover {
+    border-color: var(--sb-accent);
+    color: var(--sb-accent);
+}
+
+#filter_form,
+.filter_form {
+    background: #fff;
+    border: 1px solid var(--sb-border);
+    padding: 16px;
+    border-radius: var(--sb-radius);
+    margin: 16px 0;
+}
+
+/* ---------- Plugin list page ---------- */
+
+table#plugins_table th,
+table.tblSorter th {
+    background: #f9fafb;
+    color: var(--sb-text-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    padding: 12px 16px;
+}
+
+table#plugins_table,
+table.tblSorter {
+    width: 100%;
+    background: var(--sb-card-bg);
+    border: 1px solid var(--sb-border);
+    border-radius: var(--sb-radius);
+    overflow: hidden;
+    box-shadow: var(--sb-shadow);
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+table#plugins_table td,
+table.tblSorter td {
+    padding: 16px;
+    border-bottom: 1px solid var(--sb-border);
+    background: #fff;
+}
+
+/* Plugin "Active" / "Inactive" rows */
+tr.active {
+    background: rgba(50, 210, 150, 0.04) !important;
+}
+tr.active td {
+    background: transparent !important;
+}
+
+/* ---------- Notices / alerts ---------- */
+
+.success, p.success, div.success {
+    background: rgba(50, 210, 150, 0.1);
+    border-left: 4px solid #32d296;
+    color: #145a32;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+}
+
+.error, p.error, div.error {
+    background: rgba(240, 80, 110, 0.1);
+    border-left: 4px solid #f0506e;
+    color: #7a1a25;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+}
+
+.warning, p.warning, div.warning {
+    background: rgba(250, 160, 90, 0.1);
+    border-left: 4px solid #faa05a;
+    color: #7a3e0e;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 16px 0;
+}
+
+/* ---------- Footer ---------- */
+
+#footer {
+    text-align: center;
+    padding: 24px 0;
+    color: var(--sb-text-muted);
+    font-size: 12px;
+    border-top: 1px solid var(--sb-border);
+    margin-top: 48px;
+}
+
+#footer a {
+    color: var(--sb-text-muted);
+    text-decoration: none;
+}
+
+#footer a:hover {
+    color: var(--sb-accent);
+}
+
+/* ---------- Dashboard list cards ---------- */
+
+.sb-list-card .uk-table {
+    margin: 0;
+}
+
+.sb-list-card .uk-table th {
+    background: #f9fafb;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--sb-text-muted);
+    font-weight: 600;
+}
+
+.sb-list-card .uk-table td a {
+    color: var(--sb-accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.sb-list-title {
+    color: var(--sb-text);
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.sb-truncate {
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sb-clicks-badge {
+    background: var(--sb-accent);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 4px 10px;
+}
+
+.sb-cta {
+    border-radius: 999px;
+    padding: 10px 24px;
+    background: var(--sb-accent);
+    font-weight: 600;
+}
+
+/* ---------- Login page ---------- */
+
+body.login {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.login #wrap {
+    background: #fff !important;
+    border-radius: var(--sb-radius);
+    padding: 40px !important;
+    box-shadow: var(--sb-shadow-lg);
+    max-width: 400px;
+    margin: auto;
+}
+
+body.login h1 {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+/* ---------- Misc tweaks ---------- */
+
+a {
+    color: var(--sb-accent);
+    transition: color .15s ease;
+}
+
+a:hover {
+    color: var(--sb-accent);
+    filter: brightness(0.9);
+}
+
+code, pre {
+    background: #f3f4f6;
+    border: 1px solid var(--sb-border);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 13px;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+}
+
+/* Plugin admin pages — give them card framing */
+#wrap > h2 + form,
+#wrap > h2 + div,
+#wrap > h2 + p {
+    margin-top: 16px;
+}
+
+/* The edit-row that appears inline when you edit a link */
+.edit-row td {
+    background: #fffbeb !important;
+    border-left: 3px solid #faa05a;
+}
+
+/* Tools page checkboxes layout */
+#tools_form ul,
+.tools_block {
+    list-style: none;
+    padding: 0;
+}
+
+/* Make sure the original YOURLS share box looks decent */
+#shareboxes {
+    background: #fff;
+    border: 1px solid var(--sb-border);
+    border-radius: var(--sb-radius);
+    padding: 16px;
+    margin-top: 16px;
+    box-shadow: var(--sb-shadow);
+}
