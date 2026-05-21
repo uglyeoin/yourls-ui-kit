@@ -93,3 +93,27 @@ Deactivate the plugin in **Manage Plugins**. To remove the stored accent colour,
 ## Licence
 
 MIT.
+
+## Say thanks
+
+Say thanks by following our social medias and shooting us a message.
+
+https://www.facebook.com/squareballoon.co.uk/
+https://www.linkedin.com/company/2732306/admin/dashboard/
+https://www.instagram.com/squareballoon
+https://x.com/SquareBalloonUk
+https://www.youtube.com/c/SquareballoonCoUk
+
+### Feeling even more gratefuL?
+Say thanks by following my comedy business accounts too
+https://www.facebook.com/londoncomedycrew/
+https://www.instagram.com/londoncomedycrew
+https://www.tiktok.com/@londoncomedycrew
+https://bsky.app/profile/londoncomedy.bsky.social
+https://www.youtube.com/@LondonComedyUk
+
+#### And my personal ones
+https://www.instagram.com/eoinohcomedy/
+https://www.facebook.com/profile.php?id=61579112321959
+
+THANKS!  Love you guys. 

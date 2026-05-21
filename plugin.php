@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: UIkit Skin
-Plugin URI: https://github.com/eoinoliver/yourls-uikit-skin
+Plugin URI: https://github.com/uglyeoin/yourls-ui-kit-template
 Description: A modern admin skin for YOURLS built on UIkit 3. Drop-in replacement for the dated default look. Re-skins the existing admin pages, adds a fresh dashboard, and tidies up forms, tables and error screens — all via hooks, no core files touched.
 Version: 1.0.0
 Author: Eoin Oliver
