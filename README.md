@@ -1,7 +1,7 @@
 # Please say thanks!
 See the bottom of this document on how to say thanks for free.  Much love.
 
-# YOURLS UIkit Skin
+# YOURLS UIkit Skin [![Listed in Awesome YOURLS!](https://img.shields.io/static/v1?label=Awesome&message=YOURLS&color=C5A3BE&style=flat-square)](https://github.com/YOURLS/awesome-yourls/)
 
 A modern admin re-skin for [YOURLS](https://yourls.org/) built on [UIkit 3](https://getuikit.com/). Drop it into your `user/plugins/` folder, activate it, and the dated default look is replaced with a clean, modern interface — no core files touched.
 
