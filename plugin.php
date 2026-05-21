@@ -15,9 +15,9 @@ if ( !defined( 'YOURLS_ABSPATH' ) ) die();
  *  1.  Inject UIkit CSS + JS + our skin into every admin page <head>
  * ------------------------------------------------------------------ */
 
-yourls_add_action( 'html_head', 'yourls-ui-kit-template_head', 5 );
+yourls_add_action( 'html_head', 'yourls_ui_kit_template_head', 5 );
 
-function yourls-ui-kit-template_head() {
+function yourls_ui_kit_template_head() {
     // UIkit version pinned. Update here when you want to bump it.
     $uikit_ver = '3.25.16';
     $plugin_url = YOURLS_SITE . '/user/plugins/yourls-ui-kit-template';
@@ -25,12 +25,12 @@ function yourls-ui-kit-template_head() {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@<?php echo $uikit_ver; ?>/dist/css/uikit.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/uikit@<?php echo $uikit_ver; ?>/dist/js/uikit.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@<?php echo $uikit_ver; ?>/dist/js/uikit-icons.min.js" defer></script>
-    <link rel="stylesheet" href="<?php echo $plugin_url; ?>/assets/skin.css?v=<?php echo yourls-ui-kit-template_version(); ?>" />
-    <script src="<?php echo $plugin_url; ?>/assets/skin.js?v=<?php echo yourls-ui-kit-template_version(); ?>" defer></script>
+    <link rel="stylesheet" href="<?php echo $plugin_url; ?>/assets/skin.css?v=<?php echo yourls_ui_kit_template_version(); ?>" />
+    <script src="<?php echo $plugin_url; ?>/assets/skin.js?v=<?php echo yourls_ui_kit_template_version(); ?>" defer></script>
     <?php
 }
 
-function yourls-ui-kit-template_version() {
+function yourls_ui_kit_template_version() {
     return '1.0.0';
 }
 
@@ -46,9 +46,9 @@ function yourls-ui-kit-template_version() {
 // truly "remove" it — but we CAN inject our navbar AFTER it and hide the
 // original via CSS. That's what skin.css does (#wrap > h1 { display:none }).
 
-yourls_add_action( 'html_logo', 'yourls-ui-kit-template_navbar' );
+yourls_add_action( 'html_logo', 'yourls_ui_kit_template_navbar' );
 
-function yourls-ui-kit-template_navbar() {
+function yourls_ui_kit_template_navbar() {
     $site = YOURLS_SITE;
     $admin = yourls_admin_url();
     $current = isset($_SERVER['SCRIPT_NAME']) ? basename($_SERVER['SCRIPT_NAME']) : '';
@@ -130,15 +130,15 @@ function yourls-ui-kit-template_navbar() {
  *      table inside a UIkit card.
  * ------------------------------------------------------------------ */
 
-yourls_add_action( 'admin_page_before_table', 'yourls-ui-kit-template_table_open' );
-yourls_add_action( 'admin_page_after_table', 'yourls-ui-kit-template_table_close' );
+yourls_add_action( 'admin_page_before_table', 'yourls_ui_kit_template_table_open' );
+yourls_add_action( 'admin_page_after_table', 'yourls_ui_kit_template_table_close' );
 
-function yourls-ui-kit-template_table_open() {
+function yourls_ui_kit_template_table_open() {
     echo '<div class="uk-card uk-card-default uk-card-body sb-table-card uk-margin-top">';
     echo '<h3 class="uk-card-title"><span uk-icon="icon: link"></span> Your short links</h3>';
 }
 
-function yourls-ui-kit-template_table_close() {
+function yourls_ui_kit_template_table_close() {
     echo '</div>';
 }
 
@@ -146,14 +146,14 @@ function yourls-ui-kit-template_table_close() {
  *  5.  Register a new "Dashboard" plugin page with stat tiles
  * ------------------------------------------------------------------ */
 
-yourls_add_action( 'plugins_loaded', 'yourls-ui-kit-template_register_pages' );
+yourls_add_action( 'plugins_loaded', 'yourls_ui_kit_template_register_pages' );
 
-function yourls-ui-kit-template_register_pages() {
-    yourls_register_plugin_page( 'uikit_skin_dashboard', 'Dashboard', 'yourls-ui-kit-template_dashboard_page' );
-    yourls_register_plugin_page( 'uikit_skin_settings',  'UIkit Skin Settings', 'yourls-ui-kit-template_settings_page' );
+function yourls_ui_kit_template_register_pages() {
+    yourls_register_plugin_page( 'uikit_skin_dashboard', 'Dashboard', 'yourls_ui_kit_template_dashboard_page' );
+    yourls_register_plugin_page( 'uikit_skin_settings',  'UIkit Skin Settings', 'yourls_ui_kit_template_settings_page' );
 }
 
-function yourls-ui-kit-template_dashboard_page() {
+function yourls_ui_kit_template_dashboard_page() {
     global $ydb;
 
     // Fetch basic stats
@@ -280,7 +280,7 @@ function yourls-ui-kit-template_dashboard_page() {
     <?php
 }
 
-function yourls-ui-kit-template_settings_page() {
+function yourls_ui_kit_template_settings_page() {
     // Save settings
     if ( isset($_POST['sb_uikit_save']) ) {
         // This dies on failure with an "Unauthorized" message — perfect.
@@ -335,9 +335,9 @@ function yourls-ui-kit-template_settings_page() {
  *      the skin without editing CSS.
  * ------------------------------------------------------------------ */
 
-yourls_add_action( 'html_head', 'yourls-ui-kit-template_inline_vars', 6 );
+yourls_add_action( 'html_head', 'yourls_ui_kit_template_inline_vars', 6 );
 
-function yourls-ui-kit-template_inline_vars() {
+function yourls_ui_kit_template_inline_vars() {
     $accent = yourls_get_option( 'sb_uikit_accent', '#1e87f0' );
     if ( !preg_match('/^#[0-9a-fA-F]{6}$/', $accent) ) $accent = '#1e87f0';
     echo "<style>:root{--sb-accent:" . $accent . ";}</style>\n";
