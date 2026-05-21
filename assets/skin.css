@@ -46,6 +46,10 @@ img#yourls-logo {
     border: 0 !important;
 }
 
+#wrap p:nth-of-type(2), #wrap p:nth-of-type(3) {
+    text-align: center;
+}
+
 /* The page content (everything after the logo) sits inside <main> */
 #wrap > main,
 body > main {
