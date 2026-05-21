@@ -5,6 +5,15 @@ See the bottom of this document on how to say thanks for free.  Much love.
 
 A modern admin re-skin for [YOURLS](https://yourls.org/) built on [UIkit 3](https://getuikit.com/). Drop it into your `user/plugins/` folder, activate it, and the dated default look is replaced with a clean, modern interface — no core files touched.
 
+## Screenshots
+### Dashboard
+![Dashboard](images/screenshots/dashboard.png)
+
+### Links
+![links](images/screenshots/links.png)
+
+
+
 ## What it does
 
 - **Sticky top navbar** with site name, primary nav and user menu (mobile offcanvas included)
