@@ -129,9 +129,10 @@ function yourls_ui_kit_template_navbar() {
  *      yourls_table_tfoot() — we hook around those to wrap the
  *      table inside a UIkit card.
  * ------------------------------------------------------------------ */
-
+echo "<div class='uk-container'>";
 yourls_add_action( 'admin_page_before_table', 'yourls_ui_kit_template_table_open' );
 yourls_add_action( 'admin_page_after_table', 'yourls_ui_kit_template_table_close' );
+echo "'</div>";
 
 function yourls_ui_kit_template_table_open() {
     echo '<div class="uk-card uk-card-default uk-card-body sb-table-card uk-margin-top">';
@@ -181,102 +182,104 @@ function yourls_ui_kit_template_dashboard_page() {
     <h2 class="sb-page-title">Dashboard</h2>
     <p class="uk-text-muted">A quick overview of your shortener.</p>
 
-    <!-- Stat tiles -->
-    <div class="uk-grid-small uk-child-width-1-2 uk-child-width-1-4@m sb-stats" uk-grid>
-      <div>
-        <div class="uk-card uk-card-default uk-card-body sb-stat-card sb-stat-blue">
-          <div class="sb-stat-icon"><span uk-icon="icon: link; ratio: 1.6"></span></div>
-          <div class="sb-stat-value"><?php echo number_format( $total_links ); ?></div>
-          <div class="sb-stat-label">Total links</div>
+    <div class="uk-container">
+      <!-- Stat tiles -->
+      <div class="uk-grid-small uk-child-width-1-2 uk-child-width-1-4@m sb-stats" uk-grid>
+        <div>
+          <div class="uk-card uk-card-default uk-card-body sb-stat-card sb-stat-blue">
+            <div class="sb-stat-icon"><span uk-icon="icon: link; ratio: 1.6"></span></div>
+            <div class="sb-stat-value"><?php echo number_format( $total_links ); ?></div>
+            <div class="sb-stat-label">Total links</div>
+          </div>
         </div>
-      </div>
-      <div>
-        <div class="uk-card uk-card-default uk-card-body sb-stat-card sb-stat-green">
-          <div class="sb-stat-icon"><span uk-icon="icon: bolt; ratio: 1.6"></span></div>
-          <div class="sb-stat-value"><?php echo number_format( $total_clicks ); ?></div>
-          <div class="sb-stat-label">Total clicks</div>
+        <div>
+          <div class="uk-card uk-card-default uk-card-body sb-stat-card sb-stat-green">
+            <div class="sb-stat-icon"><span uk-icon="icon: bolt; ratio: 1.6"></span></div>
+            <div class="sb-stat-value"><?php echo number_format( $total_clicks ); ?></div>
+            <div class="sb-stat-label">Total clicks</div>
+          </div>
         </div>
-      </div>
-      <div>
-        <div class="uk-card uk-card-default uk-card-body sb-stat-card sb-stat-amber">
-          <div class="sb-stat-icon"><span uk-icon="icon: calendar; ratio: 1.6"></span></div>
-          <div class="sb-stat-value"><?php echo number_format( $week_links ); ?></div>
-          <div class="sb-stat-label">Links this week</div>
+        <div>
+          <div class="uk-card uk-card-default uk-card-body sb-stat-card sb-stat-amber">
+            <div class="sb-stat-icon"><span uk-icon="icon: calendar; ratio: 1.6"></span></div>
+            <div class="sb-stat-value"><?php echo number_format( $week_links ); ?></div>
+            <div class="sb-stat-label">Links this week</div>
+          </div>
         </div>
-      </div>
-      <div>
-        <div class="uk-card uk-card-default uk-card-body sb-stat-card sb-stat-pink">
-          <div class="sb-stat-icon"><span uk-icon="icon: bar-chart; ratio: 1.6"></span></div>
-          <div class="sb-stat-value"><?php echo $avg; ?></div>
-          <div class="sb-stat-label">Avg. clicks / link</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m uk-margin-top" uk-grid>
-
-      <!-- Top performers -->
-      <div>
-        <div class="uk-card uk-card-default uk-card-body sb-list-card">
-          <h3 class="uk-card-title"><span uk-icon="icon: star"></span> Top performers</h3>
-          <?php if ( !$top ) : ?>
-            <p class="uk-text-muted">No links yet.</p>
-          <?php else: ?>
-          <table class="uk-table uk-table-divider uk-table-small uk-table-middle">
-            <thead><tr><th>Short URL</th><th>Destination</th><th class="uk-text-right">Clicks</th></tr></thead>
-            <tbody>
-            <?php foreach ( $top as $row ) : ?>
-              <tr>
-                <td><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
-                <td class="sb-truncate">
-                  <?php if ( !empty($row->title) ) : ?>
-                    <strong class="sb-list-title"><?php echo htmlspecialchars( $row->title ); ?></strong><br>
-                  <?php endif; ?>
-                  <small class="uk-text-muted"><?php echo htmlspecialchars( $row->url ); ?></small>
-                </td>
-                <td class="uk-text-right"><span class="uk-label sb-clicks-badge"><?php echo number_format( $row->clicks ); ?></span></td>
-              </tr>
-            <?php endforeach; ?>
-            </tbody>
-          </table>
-          <?php endif; ?>
+        <div>
+          <div class="uk-card uk-card-default uk-card-body sb-stat-card sb-stat-pink">
+            <div class="sb-stat-icon"><span uk-icon="icon: bar-chart; ratio: 1.6"></span></div>
+            <div class="sb-stat-value"><?php echo $avg; ?></div>
+            <div class="sb-stat-label">Avg. clicks / link</div>
+          </div>
         </div>
       </div>
 
-      <!-- Recent links -->
-      <div>
-        <div class="uk-card uk-card-default uk-card-body sb-list-card">
-          <h3 class="uk-card-title"><span uk-icon="icon: clock"></span> Recently created</h3>
-          <?php if ( !$recent ) : ?>
-            <p class="uk-text-muted">No links yet.</p>
-          <?php else: ?>
-          <table class="uk-table uk-table-divider uk-table-small uk-table-middle">
-            <thead><tr><th>Short URL</th><th>Destination</th><th class="uk-text-right">When</th></tr></thead>
-            <tbody>
-            <?php foreach ( $recent as $row ) : ?>
-              <tr>
-                <td><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
-                <td class="sb-truncate">
-                  <?php if ( !empty($row->title) ) : ?>
-                    <strong class="sb-list-title"><?php echo htmlspecialchars( $row->title ); ?></strong><br>
-                  <?php endif; ?>
-                  <small class="uk-text-muted"><?php echo htmlspecialchars( $row->url ); ?></small>
-                </td>
-                <td class="uk-text-right"><small class="uk-text-muted"><?php echo yourls_date_i18n( 'M j, H:i', strtotime( $row->timestamp ) ); ?></small></td>
-              </tr>
-            <?php endforeach; ?>
-            </tbody>
-          </table>
-          <?php endif; ?>
+      <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m uk-margin-top" uk-grid>
+
+        <!-- Top performers -->
+        <div>
+          <div class="uk-card uk-card-default uk-card-body sb-list-card">
+            <h3 class="uk-card-title"><span uk-icon="icon: star"></span> Top performers</h3>
+            <?php if ( !$top ) : ?>
+              <p class="uk-text-muted">No links yet.</p>
+            <?php else: ?>
+            <table class="uk-table uk-table-divider uk-table-small uk-table-middle">
+              <thead><tr><th>Short URL</th><th>Destination</th><th class="uk-text-right">Clicks</th></tr></thead>
+              <tbody>
+              <?php foreach ( $top as $row ) : ?>
+                <tr>
+                  <td><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
+                  <td class="sb-truncate">
+                    <?php if ( !empty($row->title) ) : ?>
+                      <strong class="sb-list-title"><?php echo htmlspecialchars( $row->title ); ?></strong><br>
+                    <?php endif; ?>
+                    <small class="uk-text-muted"><?php echo htmlspecialchars( $row->url ); ?></small>
+                  </td>
+                  <td class="uk-text-right"><span class="uk-label sb-clicks-badge"><?php echo number_format( $row->clicks ); ?></span></td>
+                </tr>
+              <?php endforeach; ?>
+              </tbody>
+            </table>
+            <?php endif; ?>
+          </div>
+        </div>
+
+        <!-- Recent links -->
+        <div>
+          <div class="uk-card uk-card-default uk-card-body sb-list-card">
+            <h3 class="uk-card-title"><span uk-icon="icon: clock"></span> Recently created</h3>
+            <?php if ( !$recent ) : ?>
+              <p class="uk-text-muted">No links yet.</p>
+            <?php else: ?>
+            <table class="uk-table uk-table-divider uk-table-small uk-table-middle">
+              <thead><tr><th>Short URL</th><th>Destination</th><th class="uk-text-right">When</th></tr></thead>
+              <tbody>
+              <?php foreach ( $recent as $row ) : ?>
+                <tr>
+                  <td><a href="<?php echo yourls_link( $row->keyword ); ?>" target="_blank"><?php echo htmlspecialchars( $row->keyword ); ?></a></td>
+                  <td class="sb-truncate">
+                    <?php if ( !empty($row->title) ) : ?>
+                      <strong class="sb-list-title"><?php echo htmlspecialchars( $row->title ); ?></strong><br>
+                    <?php endif; ?>
+                    <small class="uk-text-muted"><?php echo htmlspecialchars( $row->url ); ?></small>
+                  </td>
+                  <td class="uk-text-right"><small class="uk-text-muted"><?php echo yourls_date_i18n( 'M j, H:i', strtotime( $row->timestamp ) ); ?></small></td>
+                </tr>
+              <?php endforeach; ?>
+              </tbody>
+            </table>
+            <?php endif; ?>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="uk-margin-top uk-text-center">
-      <a class="uk-button uk-button-primary sb-cta" href="<?php echo yourls_admin_url('index.php'); ?>">
-        <span uk-icon="icon: plus"></span> Manage all links
-      </a>
-    </div>
+      <div class="uk-margin-top uk-text-center">
+        <a class="uk-button uk-button-primary sb-cta" href="<?php echo yourls_admin_url('index.php'); ?>">
+          <span uk-icon="icon: plus"></span> Manage all links
+        </a>
+      </div>
+                  </div>
     <?php
 }
 
