@@ -31,7 +31,8 @@ html, body {
 #wrap > h1,
 h1#logo,
 #wrap > p:first-of-type,
-body > h1:first-of-type {
+body > h1:first-of-type,
+img#yourls-logo {
     display: none !important;
 }
 
