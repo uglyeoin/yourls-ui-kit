@@ -101,25 +101,25 @@ MIT.
 
 Say thanks by following our social medias and shooting us a message.
 
-- [Facebook](https://www.facebook.com/squareballoon.co.uk/)
-- [LinkedIn](https://www.linkedin.com/company/2732306/admin/dashboard/)
-- [Instagram](https://www.instagram.com/squareballoon)
-- [X / Twitter](https://x.com/SquareBalloonUk)
-- [YouTube](https://www.youtube.com/c/SquareballoonCoUk)
+- [Facebook - Square Balloon](https://www.facebook.com/squareballoon.co.uk/)
+- [LinkedIn - Square Balloon](https://www.linkedin.com/company/2732306/admin/dashboard/)
+- [Instagram - Square Balloon](https://www.instagram.com/squareballoon)
+- [X / Twitter - Square Balloon](https://x.com/SquareBalloonUk)
+- [YouTube - Square Balloon](https://www.youtube.com/c/SquareballoonCoUk)
 
 ### Feeling even more grateful?
 
 Say thanks by following my comedy business accounts too:
 
-- [Facebook](https://www.facebook.com/londoncomedycrew/)
-- [Instagram](https://www.instagram.com/londoncomedycrew)
-- [TikTok](https://www.tiktok.com/@londoncomedycrew)
-- [Bluesky](https://bsky.app/profile/londoncomedy.bsky.social)
-- [YouTube](https://www.youtube.com/@LondonComedyUk)
+- [Facebook - London Comedy](https://www.facebook.com/londoncomedycrew/)
+- [Instagram - London Comedy](https://www.instagram.com/londoncomedycrew)
+- [TikTok - London Comedy](https://www.tiktok.com/@londoncomedycrew)
+- [Bluesky - London Comedy](https://bsky.app/profile/londoncomedy.bsky.social)
+- [YouTube - London Comedy](https://www.youtube.com/@LondonComedyUk)
 
 #### And my personal ones:
 
-- [Instagram](https://www.instagram.com/eoinohcomedy/)
-- [Facebook](https://www.facebook.com/profile.php?id=61579112321959)
+- [Instagram - Eoin Oh Comedy](https://www.instagram.com/eoinohcomedy/)
+- [Facebook - Eoin Oh Comedy](https://www.facebook.com/profile.php?id=61579112321959)
 
 **Thanks! Love you guys.** ❤️
