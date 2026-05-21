@@ -1,3 +1,6 @@
+# Please say thanks!
+See the bottom of this document on how to say thanks for free.  Much love.
+
 # YOURLS UIkit Skin
 
 A modern admin re-skin for [YOURLS](https://yourls.org/) built on [UIkit 3](https://getuikit.com/). Drop it into your `user/plugins/` folder, activate it, and the dated default look is replaced with a clean, modern interface — no core files touched.
@@ -94,26 +97,29 @@ Deactivate the plugin in **Manage Plugins**. To remove the stored accent colour,
 
 MIT.
 
-## Say thanks
+## Say thanks for this free template
 
 Say thanks by following our social medias and shooting us a message.
 
-https://www.facebook.com/squareballoon.co.uk/
-https://www.linkedin.com/company/2732306/admin/dashboard/
-https://www.instagram.com/squareballoon
-https://x.com/SquareBalloonUk
-https://www.youtube.com/c/SquareballoonCoUk
+- [Facebook](https://www.facebook.com/squareballoon.co.uk/)
+- [LinkedIn](https://www.linkedin.com/company/2732306/admin/dashboard/)
+- [Instagram](https://www.instagram.com/squareballoon)
+- [X / Twitter](https://x.com/SquareBalloonUk)
+- [YouTube](https://www.youtube.com/c/SquareballoonCoUk)
 
-### Feeling even more gratefuL?
-Say thanks by following my comedy business accounts too
-https://www.facebook.com/londoncomedycrew/
-https://www.instagram.com/londoncomedycrew
-https://www.tiktok.com/@londoncomedycrew
-https://bsky.app/profile/londoncomedy.bsky.social
-https://www.youtube.com/@LondonComedyUk
+### Feeling even more grateful?
 
-#### And my personal ones
-https://www.instagram.com/eoinohcomedy/
-https://www.facebook.com/profile.php?id=61579112321959
+Say thanks by following my comedy business accounts too:
 
-THANKS!  Love you guys. 
+- [Facebook](https://www.facebook.com/londoncomedycrew/)
+- [Instagram](https://www.instagram.com/londoncomedycrew)
+- [TikTok](https://www.tiktok.com/@londoncomedycrew)
+- [Bluesky](https://bsky.app/profile/londoncomedy.bsky.social)
+- [YouTube](https://www.youtube.com/@LondonComedyUk)
+
+#### And my personal ones:
+
+- [Instagram](https://www.instagram.com/eoinohcomedy/)
+- [Facebook](https://www.facebook.com/profile.php?id=61579112321959)
+
+**Thanks! Love you guys.** ❤️
