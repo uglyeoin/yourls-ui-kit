@@ -227,7 +227,7 @@ function yourls_ui_kit_template_dashboard_page() {
 
         <!-- Top performers -->
         <div>
-          <div class="uk-card uk-card-default uk-card-body sb-list-card">
+          <div class="uk-card uk-card-default uk-card-body sb-list-card uk-card-small">
             <h3 class="uk-card-title"><span uk-icon="icon: star"></span> Top performers</h3>
             <?php if ( !$top ) : ?>
               <p class="uk-text-muted">No links yet.</p>
@@ -257,7 +257,7 @@ function yourls_ui_kit_template_dashboard_page() {
 
         <!-- Recent links -->
         <div>
-          <div class="uk-card uk-card-default uk-card-body sb-list-card">
+          <div class="uk-card uk-card-default uk-card-body sb-list-card uk-card-small">
             <h3 class="uk-card-title"><span uk-icon="icon: clock"></span> Recently created</h3>
             <?php if ( !$recent ) : ?>
               <p class="uk-text-muted">No links yet.</p>
