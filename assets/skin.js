@@ -72,7 +72,7 @@
         });
 
         // 3. Add a body class on the login page so the CSS can re-style it.
-        if (document.body && document.querySelector('form#login')) {
+        if (document.body && document.querySelector('#login form')) {
             document.body.classList.add('login');
         }
 
@@ -98,5 +98,35 @@
                 if (next && next.tagName === 'P') { wrap.appendChild(next); }
             }
         }
+    });
+})();
+
+(function () {
+    'use strict';
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.getElementById('sb-theme-form');
+        if (!form) return;
+        function preview(input) {
+            if (!input.checkValidity()) return;
+            var key = input.dataset.themeKey;
+            var unit = input.type === 'number' ? (key === 'login-angle' ? 'deg' : 'px') : '';
+            document.documentElement.style.setProperty('--sb-' + key, input.value + unit);
+        }
+        form.querySelectorAll('[data-theme-key]').forEach(function (input) {
+            preview(input);
+            input.addEventListener('input', function () {
+                var hex = form.querySelector('[data-color-for="' + input.id + '"]');
+                if (hex) hex.value = input.value;
+                preview(input);
+            });
+        });
+        form.querySelectorAll('[data-color-for]').forEach(function (hex) {
+            hex.addEventListener('input', function () {
+                if (!hex.checkValidity()) return;
+                var input = document.getElementById(hex.dataset.colorFor);
+                input.value = hex.value;
+                preview(input);
+            });
+        });
     });
 })();
