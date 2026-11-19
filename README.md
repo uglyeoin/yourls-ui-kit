@@ -1,110 +1,168 @@
-# Please say thanks!
-See the bottom of this document on how to say thanks for free.  Much love.
+# YOURLS UIkit Template
 
-# YOURLS UIkit Skin [![Listed in Awesome YOURLS!](https://img.shields.io/static/v1?label=Awesome&message=YOURLS&color=C5A3BE&style=flat-square)](https://github.com/YOURLS/awesome-yourls/)
+[![Listed in Awesome YOURLS!](https://img.shields.io/static/v1?label=Awesome&message=YOURLS&color=C5A3BE&style=flat-square)](https://github.com/YOURLS/awesome-yourls/)
 
-A modern admin re-skin for [YOURLS](https://yourls.org/) built on [UIkit 3](https://getuikit.com/). Drop it into your `user/plugins/` folder, activate it, and the dated default look is replaced with a clean, modern interface — no core files touched.
+A customizable admin template for [YOURLS](https://yourls.org/), built on UIkit 3. It styles the existing admin interface and adds a dashboard and theme configurator without modifying YOURLS core files.
+
+Current template version: **1.6.6**.
 
 ## Screenshots
+
+These screenshots show the current template with demonstration data and a red accent. Domains, usernames, IP addresses and counts are examples, not production data. Dashboard and Config use the plugin's page renderers; the Links and login previews use representative YOURLS markup.
+
 ### Dashboard
-![Dashboard](images/screenshots/dashboard.png)
+
+![Dashboard with summary cards and recent links](images/screenshots/dashboard.png)
 
 ### Links
-![links](images/screenshots/links.png)
 
+![Links table, shortening form and search controls](images/screenshots/links.png)
 
+### Config
 
-## What it does
+![Tabbed configuration with the always-visible preview](images/screenshots/config.png)
 
-- **Sticky top navbar** with site name, primary nav and user menu (mobile offcanvas included)
-- **New "Dashboard" page** with stat tiles (total links, total clicks, this week, avg clicks/link), top performers and recently created lists
-- **Re-styled main link table** — card-wrapped, hover states, badge for click counts, copy-to-clipboard button on each short URL
-- **Modern form styling** for the "new link" form, search/filter and tools pages
-- **Re-styled plugin list, alerts, pagination and footer**
-- **Themed login screen** with gradient background and centred card
-- **Configurable accent colour** via a settings page
+### Mobile login and navigation
 
-It works by hooking into YOURLS's standard plugin API (`html_head`, `html_logo`, `html_footer`, `admin_page_before_table`, `admin_page_after_table`) — no core files are modified.
+<img src="images/screenshots/login-mobile.png" alt="Responsive login screen" width="320"> <img src="images/screenshots/mobile-menu.png" alt="Mobile menu with navigation and account options" width="320">
+
+## Features
+
+- **Consistent page frame:** shared 1280 px maximum width, aligned header and footer, and responsive side margins across Links, Dashboard, Tools, Plugins, Config and statistics.
+- **Stable sticky header:** layout is reserved before UIkit JavaScript initializes, preventing the menu from expanding during page load.
+- **Account dropdown:** View public site and Logout, with YOURLS's native nonce-protected logout URL.
+- **Mobile navigation:** the header contains only the site name/logo and hamburger. The dark offcanvas menu includes navigation, the signed-in user, public site and logout.
+- **Dashboard:** total links, clicks, links created this week, average clicks per link, top performers and recent links. Cards adapt to smaller screens.
+- **Links:** themed shortening form, table, search controls and copy-to-clipboard actions. Original row action icons are recolored rather than turned into filled buttons; desktop hover/focus behavior is preserved.
+- **Tools:** grouped sections, themed bookmarklet links, readable API examples and a horizontally scrollable table on small screens.
+- **Plugins:** themed table and filter icon, with activation/deactivation kept as links that appear on row hover or keyboard focus on desktop.
+- **Statistics:** centered layout, responsive columns, themed tabs and historical click lists. Google line charts, pie charts and maps use the configured accent/palette. Visible charts redraw when the period, tab or viewport changes.
+- **Responsive login:** customizable gradient, card width, logo, readable mobile inputs and touch-friendly controls.
+- **Custom logo and favicon:** upload, replace or remove both from the Logo tab.
+- **Tabbed Config:** 40 appearance settings, live preview, shared Save changes and Restore defaults. Preview stays visible below the tabs; unsaved values survive tab switches. The selected tab is remembered within the browser session.
+- **Portable plugin folder:** CSS, JavaScript and icon URLs follow the actual plugin directory and configured YOURLS plugin URL.
 
 ## Requirements
 
-- YOURLS 1.9 or later
-- PHP 7.4+
-- A modern browser (the skin uses UIkit 3, which targets evergreen browsers)
-- An internet connection on first load (UIkit is pulled from jsDelivr CDN). If you want it fully self-hosted, see "Offline / self-hosted" below.
+- PHP 8.x and a compatible YOURLS installation. Development checks were performed with YOURLS 1.10.6; other versions are not verified here.
+- PHP **GD** for logo/favicon image decoding and PNG output. WebP upload support also depends on the server's GD build.
+- The web server must be able to create/write `YOURLS_USERDIR/ui-kit-uploads`, or that directory must be created with appropriate permissions before uploading.
+- A modern browser supporting CSS Grid, custom properties and CSS masks.
+- Access to jsDelivr for UIkit **3.25.16**, unless you self-host its assets. Statistics also use the Google Charts resources loaded by YOURLS.
 
-## Installation
+## Installation and updates
 
-1. In your YOURLS install, go to `/user/plugins/`.
-2. Create a folder with any name, for example `uikit-skin`.
-3. Copy `plugin.php` and the `assets/` folder into it. Final structure:
+1. Copy the plugin directory into your YOURLS `user/plugins/` directory. The directory name is flexible; for example:
 
-   ```
-   user/plugins/uikit-skin/
+   ```text
+   user/plugins/uikit-template/
    ├── plugin.php
-   └── assets/
-       ├── skin.css
-       └── skin.js
+   ├── README.md
+   ├── assets/
+   │   ├── skin.css
+   │   ├── skin.js
+   │   └── icons/
+   └── images/screenshots/
    ```
 
-4. In the YOURLS admin, go to **Manage Plugins** and activate **UIkit Skin**.
-5. Reload any admin page — you should now see the new look.
+2. Open **Plugins** in the existing YOURLS admin and activate **YOURLS UI Kit Template**.
+3. Use **Config** in the top navigation or mobile menu to customize the template.
+4. On updates, replace the plugin files, including `assets/icons/`, and refresh the browser cache if necessary. Keep `YOURLS_USERDIR/ui-kit-uploads` when updating.
 
-To change the accent colour, go to **Manage Plugins → UIkit Skin Settings**.
+### Renaming the plugin folder
 
-## Customising
+Deactivate the plugin, rename its directory, and reactivate it from Plugins. YOURLS records active plugins by their folder path, so renaming an active directory requires reactivation.
 
-### Accent colour
+Asset URLs are resolved with `yourls_plugin_url(__DIR__)`. Theme settings and uploaded branding are independent of the plugin directory name and are preserved.
 
-Set under **Manage Plugins → UIkit Skin Settings**. The colour is stored in YOURLS's options table as `sb_uikit_accent` and injected as a `--sb-accent` CSS variable.
+## Configuration
 
-### Tweaking the styles
+Open **Config**. Each category has its own tab, while the preview remains visible underneath. Editing a field changes the local preview immediately; **Save changes** applies all appearance fields across the site. Switching tabs does not discard unsaved values. Invalid fields are revealed in their tab before browser validation focuses them.
 
-All styling lives in `assets/skin.css`. It's plain CSS using custom properties at the top:
+| Tab | Options |
+| --- | --- |
+| Logo | Upload/remove the site logo and favicon; each has its own upload form. |
+| Colors | Accent, link and hover colors, panel/card backgrounds, primary and secondary text. |
+| Borders and cards | Border color/width and card/input corner radii. |
+| Buttons | Corner radius, horizontal/vertical padding and primary button text color. |
+| Shorten bar | Background, text color and padding. |
+| Inputs and search | Input/select colors and padding; search panel colors. |
+| Tables | Header, row, alternating row, hover and footer backgrounds; cell padding and font size. |
+| Menu | Navbar background and text color. |
+| Footer | Footer background, text color and padding; borders and links follow the shared settings. |
+| Login | Gradient colors/angle and desktop card width. On phones the login uses the available width. |
 
-```css
-:root {
-    --sb-accent: #1e87f0;
-    --sb-bg: #f6f8fb;
-    --sb-card-bg: #ffffff;
-    --sb-border: #e5e9f0;
-    --sb-radius: 10px;
-}
-```
+**Restore defaults** resets appearance fields. It does not remove the uploaded logo or favicon; use their individual Remove controls instead.
 
-Override these to shift the whole look without touching the rest of the file.
+### Logo and favicon uploads
 
-### Dashboard
+- Accepted source formats: **PNG, JPEG and WebP**.
+- Maximum upload size: **2 MB**.
+- Maximum dimensions: **4096 pixels per side**, with a **4 megapixel** total limit.
+- The favicon must be square. A **32 × 32** or **64 × 64** transparent PNG is recommended.
+- Images are decoded and re-encoded as PNG, with generated filenames. The original filename is not used for storage.
+- The logo replaces the site name in the navbar and login. The favicon uses YOURLS's `get_favicon_url` filter for pages that use its standard favicon helper.
+- Reload after uploading to update the header/browser icon. Browsers may retain an old favicon in their cache.
+- Uploads live in `YOURLS_USERDIR/ui-kit-uploads`, outside the plugin folder. Replacing/removing an image deletes the corresponding managed file after its option is updated. A failed option save removes the newly written image.
+- Upload and remove actions use YOURLS nonces. Give the web-server user write access only to the uploads directory; world-writable permissions are not required.
 
-The dashboard lives in the `sb_uikit_skin_dashboard_page()` function in `plugin.php`. To add more stat tiles, add another `<div>` inside the `.sb-stats` grid and query the database the same way the others do.
+Short URLs redirecting to another website ultimately show that destination site's favicon.
 
-## Offline / self-hosted UIkit
+### Stored settings
 
-By default UIkit is loaded from jsDelivr CDN. If you'd rather host it yourself:
+The template uses the existing YOURLS options table:
 
-1. Download UIkit's `dist/` from <https://getuikit.com/docs/installation>.
-2. Drop `uikit.min.css`, `uikit.min.js` and `uikit-icons.min.js` into `assets/uikit/`.
-3. In `plugin.php`, find the `sb_uikit_skin_head()` function and replace the three `cdn.jsdelivr.net` URLs with the local paths, e.g.:
+| Option | Purpose |
+| --- | --- |
+| `sb_uikit_theme` | Appearance settings. |
+| `sb_uikit_logo` | Generated logo filename. |
+| `sb_uikit_favicon` | Generated favicon filename. |
+| `sb_uikit_accent` | Legacy accent fallback when no newer accent setting is saved. |
+
+No additional database tables or SQL migration are needed. Colors and numeric ranges are validated on the server; arbitrary CSS is not accepted through the configurator.
+
+## Developer customization
+
+- `plugin.php`: hooks, navbar, dashboard, configuration schema, uploads and chart option filters.
+- `assets/skin.css`: theme variables, page layout and responsive styles.
+- `assets/skin.js`: live preview, tabs, page grouping, copy actions and chart redraws.
+- `assets/icons/`: monochrome SVG masks for original action/filter icons.
+
+Appearance fields are defined in `yourls_ui_kit_template_fields()`. This schema drives field rendering, validation and CSS variable output. The dashboard renderer is `yourls_ui_kit_template_dashboard_page()`.
+
+The template uses YOURLS hooks including `html_head`, `html_logo`, `plugins_loaded`, `admin_page_before_table`, `admin_page_after_table`, `get_favicon_url` and the `stats_*_options` filters. Authentication, link operations and plugin management remain in YOURLS.
+
+## Self-hosting UIkit
+
+1. Download the matching UIkit distribution from the official UIkit website.
+2. Place `uikit.min.css`, `uikit.min.js` and `uikit-icons.min.js` under `assets/uikit/`.
+3. In `yourls_ui_kit_template_head()`, replace the three jsDelivr URLs with escaped URLs based on `$plugin_url`, for example:
 
    ```php
-   <link rel="stylesheet" href="<?php echo $plugin_url; ?>/assets/uikit/uikit.min.css" />
-   <script src="<?php echo $plugin_url; ?>/assets/uikit/uikit.min.js" defer></script>
-   <script src="<?php echo $plugin_url; ?>/assets/uikit/uikit-icons.min.js" defer></script>
+   <link rel="stylesheet" href="<?php echo yourls_esc_attr($plugin_url); ?>/assets/uikit/uikit.min.css" />
+   <script src="<?php echo yourls_esc_attr($plugin_url); ?>/assets/uikit/uikit.min.js" defer></script>
+   <script src="<?php echo yourls_esc_attr($plugin_url); ?>/assets/uikit/uikit-icons.min.js" defer></script>
    ```
 
-## Known limitations
+Self-hosting UIkit does not make YOURLS's Google Charts statistics available offline.
 
-- This is a **skin**, not a fork. It re-styles existing markup; it doesn't change YOURLS's underlying page logic. If a third-party plugin outputs raw HTML on an admin page, that page will inherit base styling but may not look as polished as the native pages.
-- The original logo block is hidden via CSS rather than removed in PHP — YOURLS core doesn't currently provide a clean way to suppress the default logo output entirely. If you want it gone from the DOM as well, you can call `yourls_remove_filter()` on the default logo function (see the YOURLS hook list).
-- The dashboard queries are intentionally lightweight. On installs with millions of links, you may want to cache the stats — wrap each query in `yourls_get_transient()` / `yourls_set_transient()` (or your own caching layer).
+## Limitations and verification
+
+- Third-party plugin pages can inherit base styles, but custom markup may need additional styling. Avoid running multiple admin skins together: their CSS can conflict.
+- Original YOURLS branding markup is hidden consistently by CSS; core files are not replaced.
+- Config tabs, grouping, dropdown/offcanvas navigation and live preview require JavaScript. Without enhancement, the settings content remains available as a longer page.
+- The dashboard runs direct aggregate/list queries; it does not cache large datasets.
+- Validation included PHP lint, browser checks at desktop/mobile widths, header alignment and pre/post-JavaScript sizing, tab/preview/filter checks, and isolated HTTP upload/removal tests. Screenshot examples are demonstration renders and are not evidence of a production deployment or a live authenticated end-to-end test.
 
 ## Uninstall
 
-Deactivate the plugin in **Manage Plugins**. To remove the stored accent colour, delete the `sb_uikit_accent` row from the YOURLS options table. To remove the plugin entirely, delete the `user/plugins/uikit-skin/` folder.
+Use **Remove logo** and **Remove favicon** first if you want to remove uploaded branding. Then deactivate the plugin in Plugins and delete its plugin directory.
+
+Deactivation preserves saved settings and images. A full manual cleanup also removes `sb_uikit_theme`, `sb_uikit_logo`, `sb_uikit_favicon` and the legacy `sb_uikit_accent` option, plus remaining template-managed images in `YOURLS_USERDIR/ui-kit-uploads`. Do not delete unrelated YOURLS options or uploaded files.
 
 ## Licence
 
-MIT.
+MIT. Original author and credit links are retained below.
 
 ## Say thanks for this free template
 
@@ -132,8 +190,3 @@ Say thanks by following my comedy business accounts too:
 - [Facebook - Eoin Oh Comedy](https://www.facebook.com/profile.php?id=61579112321959)
 
 **Thanks! Love you guys.** ❤️
-### Renaming the plugin folder
-
-Asset URLs are resolved with `yourls_plugin_url(__DIR__)`, so CSS and JavaScript follow the actual folder name and configured YOURLS plugin URL. Uploaded logos remain in `YOURLS_USERDIR/ui-kit-uploads`, outside the plugin folder.
-
-YOURLS stores active plugins by folder path. Deactivate the plugin before renaming its folder, then activate it again from the Plugins page. Saved theme settings and the logo are preserved.

@@ -27,7 +27,8 @@ html, body {
     padding: 0;
 }
 
-/* Hide the original H1 logo + tagline – the navbar replaces it */
+/* Hide the original banner on every page; the plugin navbar replaces it. */
+#wrap > header[role="banner"],
 #wrap > h1,
 h1#logo,
 #wrap > p:first-of-type,
@@ -1500,4 +1501,49 @@ html { overflow-y: scroll; scrollbar-gutter: stable; }
     .sb-navbar .uk-navbar-left { min-width: 0; }
     .sb-navbar .uk-navbar-right { flex-shrink: 0; }
     .sb-navbar .uk-logo { padding-left: 0; }
+}
+
+/* Reserve the final header layout before deferred UIkit initialization. */
+.sb-navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+}
+.sb-navbar .uk-navbar-left, .sb-navbar .uk-navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.sb-navbar .uk-navbar-nav {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sb-navbar .uk-navbar-nav > li { position: relative; }
+.sb-navbar .uk-navbar-item, .sb-navbar .uk-navbar-nav > li > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+    box-sizing: border-box;
+}
+.sb-navbar [uk-icon] { display: inline-flex; width: 20px; height: 20px; flex-shrink: 0; }
+.sb-navbar .uk-navbar-dropdown:not(.uk-open) { display: none; }
+#sb-mobile-menu:not(.uk-open) { display: none; }
+@media (min-width: 640px) {
+    .sb-navbar .uk-hidden\@s { display: none !important; }
+}
+@media (max-width: 639px) {
+    .sb-navbar .uk-visible\@s { display: none !important; }
+}
+
+/* Identical header frame on core pages and plugin pages. */
+body:not(.login) #wrap > .sb-navbar { width: 100%; box-sizing: border-box; clear: both; }
+body:not(.login) #wrap > .sb-navbar > .sb-navbar-inner {
+    margin-left: auto;
+    margin-right: auto;
+    flex-shrink: 0;
 }
