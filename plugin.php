@@ -3,7 +3,7 @@
 Plugin Name: YOURLS UI Kit Template
 Plugin URI: https://github.com/uglyeoin/yourls-ui-kit-template
 Description: A modern admin skin for YOURLS built on UIkit 3. Drop-in replacement for the dated default look. Re-skins the existing admin pages, adds a fresh dashboard, and tidies up forms, tables and error screens — all via hooks, no core files touched.
-Version: 1.3.1
+Version: 1.6.4
 Author: Square Balloon Ltd
 Author URI: https://squareballoon.co.uk
 */
@@ -22,6 +22,7 @@ function yourls_ui_kit_template_head() {
     $uikit_ver = '3.25.16';
     $plugin_url = yourls_plugin_url(__DIR__);
     ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@<?php echo $uikit_ver; ?>/dist/css/uikit.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/uikit@<?php echo $uikit_ver; ?>/dist/js/uikit.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@<?php echo $uikit_ver; ?>/dist/js/uikit-icons.min.js" defer></script>
@@ -31,7 +32,7 @@ function yourls_ui_kit_template_head() {
 }
 
 function yourls_ui_kit_template_version() {
-    return '1.3.1';
+    return '1.6.4';
 }
 
 /* ------------------------------------------------------------------
@@ -59,6 +60,8 @@ function yourls_ui_kit_template_navbar() {
     }
 
     $admin = yourls_admin_url();
+    $logout_url = yourls_nonce_url('admin_logout',
+        yourls_add_query_arg(['action' => 'logout'], yourls_admin_url('index.php')), 'nonce', 'logout');
     $current = isset($_SERVER['SCRIPT_NAME']) ? basename($_SERVER['SCRIPT_NAME']) : '';
     $current_page = isset($_GET['page']) ? $_GET['page'] : '';
 
@@ -97,26 +100,23 @@ function yourls_ui_kit_template_navbar() {
       </div>
       <div class="uk-navbar-right">
         <ul class="uk-navbar-nav">
-          <li>
-            <a href="<?php echo $site; ?>" target="_blank" rel="noopener" uk-tooltip="View public site">
-              <span uk-icon="icon: world"></span>
-            </a>
-          </li>
-          <li>
-            <a href="#" uk-tooltip="Account">
+          <li class="uk-visible@s">
+            <a href="#" aria-label="Account menu" aria-haspopup="true">
               <span uk-icon="icon: user"></span>
               <span class="uk-visible@m sb-username"><?php echo defined('YOURLS_USER') ? htmlspecialchars( YOURLS_USER ) : ''; ?></span>
+              <span uk-icon="icon: chevron-down; ratio: 0.8"></span>
             </a>
-            <div class="uk-navbar-dropdown" uk-dropdown="mode: click; pos: bottom-right">
+            <div class="uk-navbar-dropdown sb-account-dropdown">
               <ul class="uk-nav uk-navbar-dropdown-nav">
                 <li class="uk-nav-header">Signed in as<br><strong><?php echo defined('YOURLS_USER') ? htmlspecialchars( YOURLS_USER ) : 'guest'; ?></strong></li>
                 <li class="uk-nav-divider"></li>
-                <li><a href="<?php echo yourls_admin_url('?action=logout'); ?>"><span uk-icon="icon: sign-out"></span> Logout</a></li>
+                <li><a href="<?php echo yourls_esc_attr($site); ?>" target="_blank" rel="noopener"><span uk-icon="icon: world"></span> View public site</a></li>
+                <li><a href="<?php echo yourls_esc_attr($logout_url); ?>"><span uk-icon="icon: sign-out"></span> Logout</a></li>
               </ul>
             </div>
           </li>
           <li class="uk-hidden@s">
-            <a href="#" uk-toggle="target: #sb-mobile-menu"><span uk-icon="icon: menu"></span></a>
+            <a href="#" aria-label="Open menu" uk-toggle="target: #sb-mobile-menu"><span uk-icon="icon: menu"></span></a>
           </li>
         </ul>
       </div>
@@ -135,7 +135,9 @@ function yourls_ui_kit_template_navbar() {
           <li><a href="<?php echo yourls_admin_url('plugins.php'); ?>"><span uk-icon="icon: database"></span> Plugins</a></li>
           <li class="<?php echo ($is_settings ? 'uk-active' : ''); ?>"><a href="<?php echo yourls_esc_attr($settings_url); ?>"><span uk-icon="icon: settings"></span> Config</a></li>
           <li class="uk-nav-divider"></li>
-          <li><a href="<?php echo yourls_admin_url('?action=logout'); ?>"><span uk-icon="icon: sign-out"></span> Logout</a></li>
+          <li class="uk-nav-header">Signed in as<br><strong><?php echo defined('YOURLS_USER') ? yourls_esc_html(YOURLS_USER) : 'guest'; ?></strong></li>
+          <li><a href="<?php echo yourls_esc_attr($site); ?>" target="_blank" rel="noopener"><span uk-icon="icon: world"></span> View public site</a></li>
+          <li><a href="<?php echo yourls_esc_attr($logout_url); ?>"><span uk-icon="icon: sign-out"></span> Logout</a></li>
         </ul>
       </div>
     </div>
@@ -152,14 +154,11 @@ yourls_add_action( 'admin_page_before_table', 'yourls_ui_kit_template_table_open
 yourls_add_action( 'admin_page_after_table', 'yourls_ui_kit_template_table_close' );
 
 function yourls_ui_kit_template_table_open() {
-    echo '<div class="uk-container">';
-    echo '<div class="uk-card uk-card-default uk-card-body sb-table-card uk-margin-top">';
-    echo '<h3 class="uk-card-title"><span uk-icon="icon: link"></span> Your short links</h3>';
+    echo '<h3 class="uk-card-title sb-links-title"><span uk-icon="icon: link"></span> Your short links</h3>';
 }
 
 function yourls_ui_kit_template_table_close() {
-    echo '</div>';
-    echo '</div>';
+    // YOURLS closes main with the table; layout wrappers are added inside it by skin.js.
 }
 
 /* ------------------------------------------------------------------
@@ -198,14 +197,14 @@ function yourls_ui_kit_template_dashboard_page() {
 
     $avg = $total_links > 0 ? round( $total_clicks / $total_links, 1 ) : 0;
     ?>
-    <div class="uk-container">
+    <div class="sb-dashboard-container">
       <h2 class="sb-page-title">Dashboard</h2>
       <p class="uk-text-muted">A quick overview of your shortener.</p>
     </div>
 
-    <div class="uk-container">
+    <div class="sb-dashboard-container">
       <!-- Stat tiles -->
-      <div class="uk-grid-small uk-child-width-1-2 uk-child-width-1-4@m sb-stats" uk-grid>
+      <div class="sb-dashboard-stats sb-stats">
         <div>
           <div class="uk-card uk-card-default uk-card-body sb-stat-card sb-stat-blue">
             <div class="sb-stat-icon"><span uk-icon="icon: link; ratio: 1.6"></span></div>
@@ -236,7 +235,7 @@ function yourls_ui_kit_template_dashboard_page() {
         </div>
       </div>
 
-      <div class="uk-grid-medium uk-child-width-1-1 uk-child-width-1-2@m uk-margin-top" uk-grid>
+      <div class="sb-dashboard-lists uk-margin-top">
 
         <!-- Top performers -->
         <div>
@@ -308,9 +307,10 @@ function yourls_ui_kit_template_dashboard_page() {
     <?php
 }
 
-function yourls_ui_kit_template_logo_url() {
-    $name = yourls_get_option('sb_uikit_logo', '');
-    if (!is_string($name) || !preg_match('/^logo-[a-f0-9]{32}\.png$/D', $name)) return '';
+function yourls_ui_kit_template_logo_url($kind = 'logo') {
+    if (!in_array($kind, ['logo', 'favicon'], true)) return '';
+    $name = yourls_get_option('sb_uikit_' . $kind, '');
+    if (!is_string($name) || !preg_match('/^' . $kind . '-[a-f0-9]{32}\.png$/D', $name)) return '';
     if (!is_file(YOURLS_USERDIR . '/ui-kit-uploads/' . $name)) return '';
     return rtrim(YOURLS_USERURL, '/') . '/ui-kit-uploads/' . $name;
 }
@@ -326,55 +326,66 @@ function yourls_ui_kit_template_brand() {
 }
 
 function yourls_ui_kit_template_delete_logo($name) {
-    if (is_string($name) && preg_match('/^logo-[a-f0-9]{32}\.png$/D', $name)) {
+    if (is_string($name) && preg_match('/^(?:logo|favicon)-[a-f0-9]{32}\.png$/D', $name)) {
         $path = YOURLS_USERDIR . '/ui-kit-uploads/' . $name;
         if (is_file($path) && !unlink($path)) error_log('UIkit: unable to remove old logo.');
     }
 }
 
-function yourls_ui_kit_template_save_logo() {
-    yourls_verify_nonce('yourls-ui-kit-template_logo');
-    $old = yourls_get_option('sb_uikit_logo', '');
-    if (isset($_POST['sb_logo_remove'])) {
-        if ($old !== '' && !yourls_update_option('sb_uikit_logo', '')) throw new RuntimeException('Unable to remove the logo.');
+function yourls_ui_kit_template_save_logo($kind = 'logo') {
+    if (!in_array($kind, ['logo', 'favicon'], true)) throw new RuntimeException('Invalid image type.');
+    yourls_verify_nonce('yourls-ui-kit-template_' . $kind);
+    $option = 'sb_uikit_' . $kind;
+    $label = ucfirst($kind);
+    $old = yourls_get_option($option, '');
+    if (isset($_POST['sb_' . $kind . '_remove'])) {
+        if ($old !== '' && !yourls_update_option($option, '')) throw new RuntimeException('Unable to remove the image.');
         yourls_ui_kit_template_delete_logo($old);
-        return 'Logo removed.';
+        return $label . ' removed.';
     }
-    $file = $_FILES['sb_logo'] ?? [];
+    $file = $_FILES['sb_' . $kind] ?? [];
     if (!is_array($file) || ($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK
         || !isset($file['tmp_name']) || !is_string($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
         throw new RuntimeException('Select an image to upload. Maximum size: 2 MB.');
     }
     $size = filesize($file['tmp_name']);
-    if ($size === false || $size < 1 || $size > 2 * 1024 * 1024) throw new RuntimeException('The logo must be no larger than 2 MB.');
+    if ($size === false || $size < 1 || $size > 2 * 1024 * 1024) throw new RuntimeException('The image must be no larger than 2 MB.');
     $info = @getimagesize($file['tmp_name']);
     if (!$info || !in_array($info[2], [IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_WEBP], true)
         || $info[0] > 4096 || $info[1] > 4096 || $info[0] * $info[1] > 4000000) {
         throw new RuntimeException('Use a PNG, JPEG or WebP image, up to 4096 pixels per side and 4 megapixels.');
     }
+    if ($kind === 'favicon' && $info[0] !== $info[1]) throw new RuntimeException('The favicon must be a square image.');
     if (!function_exists('imagecreatefromstring')) throw new RuntimeException('Image processing is unavailable on this server.');
     $image = @imagecreatefromstring(file_get_contents($file['tmp_name']));
     if (!$image) throw new RuntimeException('The image could not be read.');
     $dir = YOURLS_USERDIR . '/ui-kit-uploads';
     $path = '';
     try {
-        if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) throw new RuntimeException('Unable to create the logo folder.');
-        $name = 'logo-' . bin2hex(random_bytes(16)) . '.png';
+        if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) throw new RuntimeException('Unable to create the image folder.');
+        $name = $kind . '-' . bin2hex(random_bytes(16)) . '.png';
         $path = $dir . '/' . $name;
         imagealphablending($image, false);
         imagesavealpha($image, true);
         // Re-encode instead of storing the supplied file or its filename.
-        if (!@imagepng($image, $path)) throw new RuntimeException('Unable to store the logo.');
-        if (!yourls_update_option('sb_uikit_logo', $name)) throw new RuntimeException('Unable to save the logo.');
+        if (!@imagepng($image, $path)) throw new RuntimeException('Unable to store the image.');
+        if (!yourls_update_option($option, $name)) throw new RuntimeException('Unable to save the image.');
     } catch (Throwable $e) {
         if ($path !== '' && is_file($path)) unlink($path);
         error_log('UIkit logo upload: ' . $e->getMessage());
-        throw new RuntimeException('Unable to save the logo. Check folder permissions and try again.');
+        throw new RuntimeException('Unable to save the image. Check folder permissions and try again.');
     } finally {
         imagedestroy($image);
     }
     yourls_ui_kit_template_delete_logo($old);
-    return 'Logo uploaded. Reload the page to update the menu logo.';
+    return $label . ' uploaded. Reload the page to see the updated image.';
+}
+
+yourls_add_filter('get_favicon_url', 'yourls_ui_kit_template_favicon');
+
+function yourls_ui_kit_template_favicon($default) {
+    $url = yourls_ui_kit_template_logo_url('favicon');
+    return $url !== '' ? $url : $default;
 }
 
 // One schema drives rendering, validation and CSS output.
@@ -453,6 +464,14 @@ function yourls_ui_kit_template_settings_page() {
             $message = $e->getMessage();
         }
     }
+    if (isset($_POST['sb_favicon_upload']) || isset($_POST['sb_favicon_remove'])) {
+        try {
+            $message = yourls_ui_kit_template_save_logo('favicon');
+        } catch (RuntimeException $e) {
+            $error = true;
+            $message = $e->getMessage();
+        }
+    }
     if (isset($_POST['sb_uikit_save']) || isset($_POST['sb_uikit_reset'])) {
         yourls_verify_nonce('yourls-ui-kit-template_settings');
         $next = [];
@@ -482,8 +501,8 @@ function yourls_ui_kit_template_settings_page() {
       <?php if ($message !== ''): ?>
         <div role="status" class="<?php echo $error ? 'uk-alert-danger' : 'uk-alert-success'; ?>" uk-alert><?php echo yourls_esc_html($message); ?></div>
       <?php endif; ?>
-      <div class="uk-card uk-card-default uk-card-body uk-margin">
-        <h3>Logo</h3>
+      <fieldset class="uk-card uk-card-default uk-card-body sb-logo-settings">
+        <legend>Logo</legend>
         <p>Displayed in the admin menu and on the login screen. PNG, JPEG or WebP, up to 2 MB and 4 megapixels. Transparent PNG recommended.</p>
         <?php if (yourls_ui_kit_template_logo_url() !== ''): ?>
           <div class="sb-logo-preview uk-margin"><?php yourls_ui_kit_template_brand(); ?></div>
@@ -499,7 +518,24 @@ function yourls_ui_kit_template_settings_page() {
             <?php endif; ?>
           </div>
         </form>
-      </div>
+        <hr>
+        <h3>Favicon</h3>
+        <p>Browser tab icon for the site and admin screens. Upload a square PNG, JPEG or WebP, up to 2 MB and 4 megapixels. A 32 × 32 or 64 × 64 transparent PNG is recommended.</p>
+        <?php if (yourls_ui_kit_template_logo_url('favicon') !== ''): ?>
+          <img src="<?php echo yourls_esc_attr(yourls_ui_kit_template_logo_url('favicon')); ?>" alt="Current favicon" width="32" height="32" class="uk-margin-small-bottom">
+        <?php endif; ?>
+        <form method="post" enctype="multipart/form-data" class="uk-form-stacked">
+          <input type="hidden" name="nonce" value="<?php echo yourls_esc_attr(yourls_create_nonce('yourls-ui-kit-template_favicon')); ?>">
+          <label class="uk-form-label" for="sb-favicon-upload">Favicon image</label>
+          <input type="file" id="sb-favicon-upload" name="sb_favicon" accept="image/png,image/jpeg,image/webp" class="uk-margin-small-bottom">
+          <div class="uk-margin-small-top">
+            <button type="submit" name="sb_favicon_upload" value="1" class="uk-button uk-button-primary">Upload favicon</button>
+            <?php if (yourls_ui_kit_template_logo_url('favicon') !== ''): ?>
+              <button type="submit" name="sb_favicon_remove" value="1" class="uk-button uk-button-default">Remove favicon</button>
+            <?php endif; ?>
+          </div>
+        </form>
+      </fieldset>
       <form method="post" class="uk-form-stacked" id="sb-theme-form">
         <input type="hidden" name="nonce" value="<?php echo yourls_esc_attr(yourls_create_nonce('yourls-ui-kit-template_settings')); ?>">
         <div class="sb-settings-grid">
@@ -565,4 +601,59 @@ function yourls_ui_kit_template_inline_vars() {
         echo '--sb-' . $key . ':' . $value . $unit . ';';
     }
     echo "}</style>\n";
+}
+
+// Theme Google Charts through YOURLS filters, without changing core files.
+yourls_add_filter('stats_line_options', 'yourls_ui_kit_template_line_options');
+yourls_add_filter('stats_pie_options', 'yourls_ui_kit_template_pie_options');
+yourls_add_filter('stats_countries_map_options', 'yourls_ui_kit_template_map_options');
+
+function yourls_ui_kit_template_chart_options($options) {
+    $theme = yourls_ui_kit_template_settings();
+    $options['backgroundColor'] = $theme['card-bg'];
+    $options['width'] = '100%';
+    $options['fontName'] = 'Arial';
+    return $options;
+}
+
+function yourls_ui_kit_template_chart_palette() {
+    $theme = yourls_ui_kit_template_settings();
+    $rgb = sscanf($theme['accent'], '#%02x%02x%02x');
+    $palette = [];
+    foreach ([0, .18, .36, .54, .72] as $mix) {
+        $palette[] = sprintf('#%02x%02x%02x',
+            (int) round($rgb[0] + (255 - $rgb[0]) * $mix),
+            (int) round($rgb[1] + (255 - $rgb[1]) * $mix),
+            (int) round($rgb[2] + (255 - $rgb[2]) * $mix));
+    }
+    return $palette;
+}
+
+function yourls_ui_kit_template_line_options($options) {
+    $theme = yourls_ui_kit_template_settings();
+    $options = yourls_ui_kit_template_chart_options($options);
+    $options['colors'] = json_encode([$theme['accent']]);
+    $options['hAxis'] = json_encode(['minTextSpacing' => 80, 'maxTextLines' => 1, 'maxAlternation' => 1,
+        'textStyle' => ['color' => $theme['text-muted']], 'baselineColor' => $theme['border']]);
+    $options['vAxis'] = json_encode(['minValue' => 0, 'format' => '#',
+        'textStyle' => ['color' => $theme['text-muted']], 'gridlines' => ['color' => $theme['border']],
+        'baselineColor' => $theme['border']]);
+    return $options;
+}
+
+function yourls_ui_kit_template_pie_options($options) {
+    $theme = yourls_ui_kit_template_settings();
+    $options = yourls_ui_kit_template_chart_options($options);
+    $options['colors'] = json_encode(yourls_ui_kit_template_chart_palette());
+    $options['pieSliceBorderColor'] = $theme['card-bg'];
+    $options['pieSliceTextStyle'] = json_encode(['color' => $theme['text']]);
+    return $options;
+}
+
+function yourls_ui_kit_template_map_options($options) {
+    $theme = yourls_ui_kit_template_settings();
+    $options = yourls_ui_kit_template_chart_options($options);
+    $options['colorAxis'] = json_encode(['colors' => array_reverse(yourls_ui_kit_template_chart_palette())]);
+    $options['datalessRegionColor'] = $theme['table-alt-bg'];
+    return $options;
 }

@@ -83,7 +83,7 @@
 
         // 5. Wrap the page h2 + optional description paragraph in uk-container.
         var mainEl = document.querySelector('#wrap > main, body > main');
-        if (mainEl) {
+        if (mainEl && !document.body.classList.contains('tools')) {
             var children = mainEl.children;
             var pageH2 = null;
             for (var i = 0; i < children.length; i++) {
@@ -128,5 +128,179 @@
                 preview(input);
             });
         });
+    });
+})();
+
+(function () {
+    'use strict';
+    document.addEventListener('DOMContentLoaded', function () {
+        if (!document.body.classList.contains('infos')) return;
+        var timer;
+        function redraw() {
+            if (!window.google || !google.visualization) return;
+            document.querySelectorAll('script[id^="yourls_graph"]').forEach(function (script) {
+                var chart = document.getElementById('visualization_' + script.id.replace('yourls_graph', ''));
+                if (chart && chart.getClientRects().length && chart.clientWidth > 0 && typeof window[script.id] === 'function') {
+                    window[script.id]();
+                }
+            });
+        }
+        var tabs = document.getElementById('tabs');
+        if (tabs) tabs.addEventListener('click', function (event) {
+            if (event.target.closest('ul.toggle_display a')) requestAnimationFrame(redraw);
+        });
+        window.addEventListener('resize', function () {
+            clearTimeout(timer);
+            timer = setTimeout(redraw, 150);
+        });
+    });
+})();
+
+
+(function () {
+    'use strict';
+    document.addEventListener('DOMContentLoaded', function () {
+        if (!document.body.classList.contains('tools')) return;
+        var main = document.querySelector('#wrap > main');
+        if (!main) return;
+        // Group existing content without rebuilding bookmarklet URLs or API examples.
+        var section;
+        Array.from(main.childNodes).forEach(function (node) {
+            if (node.nodeType === 1 && node.tagName === 'H2') {
+                section = document.createElement('section');
+                section.className = 'sb-tools-section';
+                main.insertBefore(section, node);
+            }
+            if (section) section.appendChild(node);
+        });
+        main.querySelectorAll('table.tblSorter').forEach(function (table) {
+            var wrapper = document.createElement('div');
+            wrapper.className = 'sb-tools-table';
+            wrapper.tabIndex = 0;
+            wrapper.setAttribute('role', 'region');
+            wrapper.setAttribute('aria-label', 'Bookmarklets');
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        });
+    });
+})();
+
+(function () {
+    'use strict';
+    document.addEventListener('DOMContentLoaded', function () {
+        if (!document.body.classList.contains('plugins')) return;
+        var filter = document.getElementById('toggle_plugins');
+        if (filter) {
+            // Keep YOURLS' existing click handler; replace only its inline appearance.
+            filter.removeAttribute('style');
+            filter.textContent = 'filter';
+            filter.setAttribute('aria-label', 'Toggle active/inactive plugins');
+            filter.setAttribute('role', 'button');
+            filter.tabIndex = 0;
+            filter.setAttribute('aria-pressed', 'false');
+            filter.addEventListener('click', function () {
+                var row = document.querySelector('#main_table tr.inactive');
+                filter.setAttribute('aria-pressed', row && getComputedStyle(row).display === 'none' ? 'true' : 'false');
+            });
+            filter.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    filter.click();
+                }
+            });
+        }
+        var table = document.querySelector('main > table#main_table');
+        if (table) {
+            var wrapper = document.createElement('div');
+            wrapper.className = 'sb-plugins-table';
+            wrapper.tabIndex = 0;
+            wrapper.setAttribute('role', 'region');
+            wrapper.setAttribute('aria-label', 'Plugins');
+            table.parentNode.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+        }
+    });
+})();
+
+(function () {
+    'use strict';
+    document.addEventListener('DOMContentLoaded', function () {
+        var root = document.querySelector('.sb-theme-settings');
+        var form = document.getElementById('sb-theme-form');
+        if (!root || !form) return;
+        var logo = root.querySelector(':scope > .uk-card');
+        var fields = Array.from(form.querySelectorAll('.sb-settings-grid > fieldset'));
+        var panels = [logo].concat(fields).filter(Boolean);
+        var tabs = document.createElement('div');
+        tabs.className = 'sb-config-tabs';
+        tabs.setAttribute('role', 'tablist');
+        tabs.setAttribute('aria-label', 'Template settings');
+        root.insertBefore(tabs, logo || form);
+        var buttons = [];
+        var storageKey = 'sb-uikit-config-tab';
+        function activate(index, focus) {
+            panels.forEach(function (panel, i) {
+                panel.hidden = i !== index;
+                buttons[i].setAttribute('aria-selected', i === index ? 'true' : 'false');
+                buttons[i].tabIndex = i === index ? 0 : -1;
+            });
+            form.hidden = fields.indexOf(panels[index]) === -1;
+            if (focus) buttons[index].focus();
+            try { sessionStorage.setItem(storageKey, String(index)); } catch (e) {}
+        }
+        panels.forEach(function (panel, index) {
+            var heading = panel.querySelector('legend, h3');
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.textContent = heading ? heading.textContent : 'Settings';
+            button.id = 'sb-config-tab-' + index;
+            panel.id = 'sb-config-panel-' + index;
+            panel.setAttribute('role', 'tabpanel');
+            panel.setAttribute('aria-labelledby', button.id);
+            button.setAttribute('role', 'tab');
+            button.setAttribute('aria-controls', panel.id);
+            button.addEventListener('click', function () { activate(index, false); });
+            button.addEventListener('keydown', function (event) {
+                var next;
+                if (event.key === 'ArrowRight') next = (index + 1) % panels.length;
+                if (event.key === 'ArrowLeft') next = (index + panels.length - 1) % panels.length;
+                if (event.key === 'Home') next = 0;
+                if (event.key === 'End') next = panels.length - 1;
+                if (next !== undefined) { event.preventDefault(); activate(next, true); }
+            });
+            buttons.push(button);
+            tabs.appendChild(button);
+        });
+        // Reveal invalid fields before native validation tries to focus them.
+        form.addEventListener('invalid', function (event) {
+            var panel = event.target.closest('fieldset');
+            var index = panels.indexOf(panel);
+            if (index >= 0) activate(index, false);
+        }, true);
+        var initial = 1;
+        try {
+            var saved = sessionStorage.getItem(storageKey);
+            if (saved !== null && /^\d+$/.test(saved) && Number(saved) < panels.length) initial = Number(saved);
+        } catch (e) {}
+        root.classList.add('sb-config-tabbed');
+        activate(initial, false);
+    });
+})();
+
+(function () {
+    'use strict';
+    document.addEventListener('DOMContentLoaded', function () {
+        if (!document.body.classList.contains('index') && !document.body.classList.contains('bookmark')) return;
+        var table = document.getElementById('main_table');
+        var title = document.querySelector('.sb-links-title');
+        if (!table || !title) return;
+        var card = document.createElement('section');
+        card.className = 'uk-card uk-card-default uk-card-body sb-table-card';
+        title.parentNode.insertBefore(card, title);
+        card.appendChild(title);
+        var scroll = document.createElement('div');
+        scroll.className = 'sb-links-table-scroll';
+        card.appendChild(scroll);
+        scroll.appendChild(table);
     });
 })();
