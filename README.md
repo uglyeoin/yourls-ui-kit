@@ -36,7 +36,7 @@ It works by hooking into YOURLS's standard plugin API (`html_head`, `html_logo`,
 ## Installation
 
 1. In your YOURLS install, go to `/user/plugins/`.
-2. Create a folder named `uikit-skin`.
+2. Create a folder with any name, for example `uikit-skin`.
 3. Copy `plugin.php` and the `assets/` folder into it. Final structure:
 
    ```
@@ -132,3 +132,8 @@ Say thanks by following my comedy business accounts too:
 - [Facebook - Eoin Oh Comedy](https://www.facebook.com/profile.php?id=61579112321959)
 
 **Thanks! Love you guys.** ❤️
+### Renaming the plugin folder
+
+Asset URLs are resolved with `yourls_plugin_url(__DIR__)`, so CSS and JavaScript follow the actual folder name and configured YOURLS plugin URL. Uploaded logos remain in `YOURLS_USERDIR/ui-kit-uploads`, outside the plugin folder.
+
+YOURLS stores active plugins by folder path. Deactivate the plugin before renaming its folder, then activate it again from the Plugins page. Saved theme settings and the logo are preserved.
